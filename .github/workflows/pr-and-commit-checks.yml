@@ -1,0 +1,41 @@
+name: Run prettier
+
+on:
+  push:
+    branches: [ main ]
+
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install all dependencies
+        run: npm install
+
+  prettier:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run prettier check
+        run: npm run prettier
+
+  eslint:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run ESLint check
+        run: npm run eslint
+
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build static resources
+        run: npm run build
