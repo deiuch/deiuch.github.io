@@ -1,4 +1,4 @@
-name: Run prettier
+name: CI
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  setup:
+  prettier:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,23 +19,29 @@ jobs:
       - name: Install all dependencies
         run: npm install
 
-  prettier:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
       - name: Run prettier check
         run: npm run prettier
 
   eslint:
-    needs: setup
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install all dependencies
+        run: npm install
+
       - name: Run ESLint check
         run: npm run eslint
 
   build:
-    needs: setup
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install all dependencies
+        run: npm install
+
       - name: Build static resources
         run: npm run build
